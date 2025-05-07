@@ -1,7 +1,10 @@
 from fastapi import FastAPI
+from controller import person_controller, location_controller, typedoc_controller
 
 app = FastAPI()
-
+app.include_router(person_controller.router)
+app.include_router(location_controller.router)
+app.include_router(typedoc_controller.router)
 
 @app.get("/")
 async def root():
