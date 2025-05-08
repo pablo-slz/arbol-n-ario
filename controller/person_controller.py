@@ -2,6 +2,8 @@ from fastapi import APIRouter
 from model.person import Person
 from service import person_service
 from model.filterperson import FilterPerson
+from fastapi import HTTPException, status
+
 
 router = APIRouter(prefix="/person")
 
@@ -11,8 +13,24 @@ def get_by_filters_json(filters: FilterPerson):
 
 @router.post("/")
 def create(person: Person):
-    return person_service.create_person(person)
-
+    try:
+        # Validación personalizada para la primera persona
+        if person.parent_id != None and person_service.is_tree_empty():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Si eres la primera persona en crear tu árbol, debes poner 'null' en el parent_id para ser la raíz."
+            )
+        return person_service.create_person(person)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error interno en el servidor al crear la persona."
+        )
 @router.get("/")
 def get_all():
     return person_service.list_persons()

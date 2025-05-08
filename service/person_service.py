@@ -25,3 +25,6 @@ def get_persons_by_location(location_code: str) -> List[Person]:
 def get_parents_with_adult_daughters() -> List[Person]:
     return tree.get_persons_with_adult_daughter()
 
+def is_tree_empty() -> bool:
+    return len(tree.roots) == 0
+
