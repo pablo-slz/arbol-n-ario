@@ -8,7 +8,7 @@ class Person(BaseModel):
     name: str
     last_name: str
     age: int
-    gender: str  # 'M' o 'F'
+    gender: str
     typedoc: TypeDoc
     location: Location
-    parent_id: Optional[int] = None  # None indica que no tiene padre (es raíz)
+    parent_id: Optional[int] = None
