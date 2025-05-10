@@ -22,7 +22,6 @@ def get_by_filters_json(filters: FilterPerson):
 @router.post("/")
 def create(person: Person):
     try:
-        # Validación personalizada para la raíz
         if person_service.is_tree_empty() and person.parent_id is not None:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -33,11 +32,9 @@ def create(person: Person):
         return result
 
     except HTTPException as e:
-        # Relevamos directamente las excepciones personalizadas que nosotros lanzamos
         raise e
 
     except Exception as e:
-        # Imprimir el error interno en consola para ayudarte a depurar
         print(f"Error inesperado: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
